@@ -4,14 +4,14 @@ const BASE = 'http://localhost:8000'
 export const backendApi = {
     // 고객 관리 CRUD
     async getCustomers() {
-        const res = await fetch(`${BASE}/customers`)
-        if (!res.ok) throw new Error(`GET /customers ${res.status}`)
+        const res = await fetch(`${BASE}/api/customer`)
+        if (!res.ok) throw new Error(`GET /api/customer ${res.status}`)
         return res.json()
     },
 
     async getCustomer(customerNo: number) {
-        const res = await fetch(`${BASE}/customers/${customerNo}`)
-        if (!res.ok) throw new Error(`GET /customers/${customerNo} ${res.status}`)
+        const res = await fetch(`${BASE}/api/customer/${customerNo}`)
+        if (!res.ok) throw new Error(`GET /api/customer/${customerNo} ${res.status}`)
         return res.json()
     },
 
@@ -24,12 +24,12 @@ export const backendApi = {
         investment_personality: number
         grade: string
     }) {
-        const res = await fetch(`${BASE}/customers`, {
+        const res = await fetch(`${BASE}/api/customer`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
         })
-        if (!res.ok) throw new Error(`POST /customers ${res.status}`)
+        if (!res.ok) throw new Error(`POST /api/customer ${res.status}`)
         return res.json()
     },
 
@@ -42,20 +42,20 @@ export const backendApi = {
         investment_personality?: number
         grade?: string
     }) {
-        const res = await fetch(`${BASE}/customers/${customerNo}`, {
+        const res = await fetch(`${BASE}/api/customer/${customerNo}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
         })
-        if (!res.ok) throw new Error(`PUT /customers/${customerNo} ${res.status}`)
+        if (!res.ok) throw new Error(`PUT /api/customer/${customerNo} ${res.status}`)
         return res.json()
     },
 
     async deleteCustomer(customerNo: number) {
-        const res = await fetch(`${BASE}/customers/${customerNo}`, {
+        const res = await fetch(`${BASE}/api/customer/${customerNo}`, {
             method: "DELETE",
         })
-        if (!res.ok) throw new Error(`DELETE /customers/${customerNo} ${res.status}`)
+        if (!res.ok) throw new Error(`DELETE /api/customer/${customerNo} ${res.status}`)
         return res.json()
     },
 
@@ -66,16 +66,16 @@ export const backendApi = {
         params.append('limit', limit.toString())
         params.append('offset', offset.toString())
         
-        console.log(`백엔드 API 호출: ${BASE}/consultation?${params}`)
+        console.log(`백엔드 API 호출: ${BASE}/api/consultation?${params}`)
         
         try {
-            const res = await fetch(`${BASE}/consultation?${params}`)
+            const res = await fetch(`${BASE}/api/consultation?${params}`)
             console.log('응답 상태:', res.status, res.statusText)
             
             if (!res.ok) {
                 const errorText = await res.text()
                 console.error('API 오류 응답:', errorText)
-                throw new Error(`GET /consultation ${res.status}: ${errorText}`)
+                throw new Error(`GET /api/consultation ${res.status}: ${errorText}`)
             }
             
             const result = await res.json()
@@ -139,18 +139,18 @@ export const backendApi = {
         const params = new URLSearchParams()
         if (consultationNo) params.append('consultation_no', consultationNo.toString())
         
-        console.log(`📡 팩트체크 API 호출: ${BASE}/factchecks?${params.toString()}`)
+        console.log(`📡 팩트체크 API 호출: ${BASE}/api/factchecks?${params.toString()}`)
         
         try {
             // ✅ 슬래시(/) 제거 및 toString() 추가
-            const url = `${BASE}/factchecks?${params.toString()}`
+            const url = `${BASE}/api/factchecks?${params.toString()}`
             const res = await fetch(url)
             console.log('팩트체크 응답 상태:', res.status, res.statusText)
             
             if (!res.ok) {
                 const errorText = await res.text()
                 console.error('팩트체크 API 오류 응답:', errorText)
-                throw new Error(`GET /factchecks ${res.status}: ${errorText}`)
+                throw new Error(`GET /api/factchecks ${res.status}: ${errorText}`)
             }
             
             const result = await res.json()
@@ -174,8 +174,8 @@ export const backendApi = {
     },
 
     async getFactCheck(factcheckNo: number) {
-        const res = await fetch(`${BASE}/factchecks/${factcheckNo}`)
-        if (!res.ok) throw new Error(`GET /factchecks/${factcheckNo} ${res.status}`)
+        const res = await fetch(`${BASE}/api/factchecks/${factcheckNo}`)
+        if (!res.ok) throw new Error(`GET /api/factchecks/${factcheckNo} ${res.status}`)
         return res.json()
     },
 
@@ -189,7 +189,7 @@ export const backendApi = {
         original_text?: string
         timestamp?: string
     }) {
-        const res = await fetch(`${BASE}/factchecks`, {
+        const res = await fetch(`${BASE}/api/factchecks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

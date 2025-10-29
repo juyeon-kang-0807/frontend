@@ -94,13 +94,14 @@ export function ConsultationHistoryList({
         const convertedHistories: ConsultationHistory[] = (consultations || []).map((consultation: any) => {
           console.log('상담 데이터 변환:', consultation);
           
-          // 고객 정보 추출 (조인된 데이터에서)
-          const customerInfo = consultation.customer || {};
+          // ✅ 백엔드에서 이미 customer_name과 customer_phone을 포함시켜서 보냄
+          const customerName = consultation.customer_name || `고객 ${consultation.customer_no}`;
+          const phoneNumber = consultation.customer_phone || '전화번호 없음';
           
           return {
             id: consultation.consultation_no?.toString() || consultation.id?.toString() || `consultation-${Math.random()}`,
-            customerName: customerInfo.customer_name || `고객 ${consultation.customer_no}`,
-            phoneNumber: customerInfo.phone || '전화번호 없음',
+            customerName: customerName,
+            phoneNumber: phoneNumber,
             timestamp: new Date(consultation.consulted_at || consultation.created_at || new Date()),
             violationCount: 0, // 팩트체크 개수로 업데이트 가능
             feedbacks: [],
@@ -229,11 +230,14 @@ export function ConsultationHistoryList({
         </div>
       </div>
 
+<div className="flex flex-col h-screen">
+</div>
       {/* History List - 스크롤 가능한 영역 */}
-      <div className="flex-1 overflow-y-auto p-2 min-h-0" 
+      <div className="flex-1 min-h-0 overflow-y-auto p-2 border rounded-lg" 
            style={{ 
              scrollbarWidth: 'thin', 
-             scrollbarColor: '#4B5563 #F3F4F6'
+             scrollbarColor: '#4B5563 #F3F4F6',
+             maxHeight: '690px'
            }}>
         {loading ? (
           <div className="flex items-center justify-center h-full">

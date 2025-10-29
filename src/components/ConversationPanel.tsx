@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Card } from './ui/card';
-import { ScrollArea } from './ui/scroll-area';
 import { User, Headphones } from 'lucide-react';
 import { FeedbackCard } from './FeedbackCard';
 
@@ -45,11 +44,10 @@ export function ConversationPanel({ messages, isRecording, feedbacks, miniMode =
   };
 
   const cardHeight = miniMode ? 'h-[500px]' : 'h-full';
-  const scrollHeight = miniMode ? 'h-[calc(100%-65px)]' : 'h-[calc(100%-65px)]';
 
   return (
-    <Card className={cardHeight}>
-      <div className="p-4 border-b border-gray-200 bg-gray-50">
+    <Card className={`${cardHeight} flex flex-col overflow-hidden`}>
+      <div className="p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
         <div className="flex items-center justify-between">
           <h2 className="text-gray-900">실시간 상담 내용</h2>
           {isRecording && !miniMode && (
@@ -61,7 +59,7 @@ export function ConversationPanel({ messages, isRecording, feedbacks, miniMode =
         </div>
       </div>
 
-      <ScrollArea className={scrollHeight}>
+      <div className="flex-1 overflow-y-auto">
         <div ref={scrollRef} className="p-4 space-y-4">
           {messages.length === 0 && !isRecording && (
             <div className="text-center py-20">
@@ -129,7 +127,7 @@ export function ConversationPanel({ messages, isRecording, feedbacks, miniMode =
             );
           })}
         </div>
-      </ScrollArea>
+      </div>
     </Card>
   );
 }

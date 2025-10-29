@@ -22,7 +22,7 @@ export function CareLogo({ size = 'md', color = 'blue', className = '', onClick 
       className={`${sizeClasses[size]} font-bold ${colorClasses[color]} ${className} ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
       onClick={onClick}
     >
-      CARE
+      CARE SYSTEM
     </div>
   );
 }

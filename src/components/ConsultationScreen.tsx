@@ -32,6 +32,7 @@ interface ConsultationScreenProps {
   phoneNumber: string;
   onEndConsultation?: (feedbacks: Feedback[]) => void;
   onBackToMain?: () => void;
+  onViewHistory?: () => void;
 }
 
 export function ConsultationScreen({
@@ -39,6 +40,7 @@ export function ConsultationScreen({
   phoneNumber,
   onEndConsultation,
   onBackToMain,
+  onViewHistory,
 }: ConsultationScreenProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
@@ -91,8 +93,9 @@ export function ConsultationScreen({
         const text = data?.text ?? '';
         if (!text) return;
 
+        // 백엔드는 'BANKER'/'CUSTOMER'로 보내지만 프론트는 'agent'/'customer'로 변환
         const speaker: 'agent' | 'customer' =
-          data?.speaker === 'customer' ? 'customer' : 'agent';
+          data?.speaker === 'CUSTOMER' || data?.speaker === 'customer' ? 'customer' : 'agent';
 
         const newMsg: Message = {
           id: `stt-${Date.now()}`,
@@ -190,6 +193,7 @@ export function ConsultationScreen({
     <div className="min-h-screen bg-white flex flex-col">
       <TopHeader
         isRecording={isRecording}
+        onViewHistory={onViewHistory || onBackToMain}
         onStartStop={handleStartStop}
         onBackToMain={onBackToMain}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -205,8 +209,8 @@ export function ConsultationScreen({
             <SessionStatusBar sessionId={sessionInfo.sessionId} />
           </div>
         )}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 p-4 overflow-hidden">
+        <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 p-4 min-h-0 flex flex-col">
             <ConversationPanel
               messages={messages}
               isRecording={isRecording}
